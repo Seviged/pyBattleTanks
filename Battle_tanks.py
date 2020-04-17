@@ -82,7 +82,7 @@ key = 0
 enable = 0
 
 rect = []
-boom = []
+booms = []
 class Explosion:
         def __init__(self, e_rectcenter, explosion):
                 self.explosion = explosion
@@ -90,8 +90,8 @@ class Explosion:
                 self.e_rect.center = e_rectcenter
                 self.slide_rect = slide_rect
                 self.ilolo = 0
-        def render(self,screen):
-                screen.blit(self.explosion, self.e_rect, self.slide_rect)
+        def render(self, screen):
+                screen.blit(self.explosion, e_rect, self.slide_rect)
         def step(self):
                 self.ilolo += 1
                 self.slide_rect.x = (ilolo / 2) * 20
@@ -103,12 +103,13 @@ class Explosion:
 enemies = 1
 
 class Shoot:
-        def __init__(self, pos1, pos2, orient):
+        def __init__(self, pos1, pos2, orient, sight):
                 self.x = pos1
                 self.y = pos2
                 self.orient = orient
                 self.speed = 2
                 self.damage = 15
+                self.sight = sight
 
         def step(self):
                 if self.orient == 1:
@@ -128,6 +129,7 @@ class Shoot:
                         elif up == 2:
                                 matrix[self.y / 10 +1][self.x / 10] = 0
                                 play.wall = 0
+                                booms.append(Explosion((self.x, self.y),explosion))
                                 return True
                         else:
                                 return False
@@ -415,13 +417,13 @@ class Enemy:
         def enshoot(self):
                 if self.k == 0:
                         if self.orient == 1:
-                                shoots.append(Shoot(self.x, self.y -4, self.orient))
+                                shoots.append(Shoot(self.x, self.y -4, self.orient, 0))
                         elif self.orient == 2:
-                                shoots.append(Shoot(self.x, self.y +4, self.orient))
+                                shoots.append(Shoot(self.x, self.y +4, self.orient, 0))
                         elif self.orient == 3:
-                                shoots.append(Shoot(self.x-4, self.y, self.orient))
+                                shoots.append(Shoot(self.x-4, self.y, self.orient, 0))
                         elif self.orient == 4:
-                                shoots.append(Shoot(self.x +4, self.y, self.orient))
+                                shoots.append(Shoot(self.x +4, self.y, self.orient, 0))
                         self.k = 100
                 elif self.timer != 0:
                         pass
@@ -543,8 +545,8 @@ while not done:
                                 play.gg = play.ggd
                         elif event.key == pygame.K_SPACE:
                                 if fight <= 0:
-                                        shoots.append(Shoot(play.ggx, play.ggy, play.orient))
-                                        fight = 50
+                                        shoots.append(Shoot(play.ggx, play.ggy, play.orient, 1))
+                                        fight = 3
                                 
                                 
                                 
@@ -659,33 +661,32 @@ while not done:
         m1m = len(shoots) -1
         while m1m > 0:
                 m2m = len(enemyes)-1
-                while m2m > 0:
-                        #if shoots[m1m] == 0:
-                        #        pass
-                        #else:
+                while m2m >= 0:
                         dx = shoots[m1m].x - enemyes[m2m].x
                         dy = shoots[m1m].y - enemyes[m2m].y
                         if dx < 0:
                                 dx = -dx
                         if dy < 0:
                                 dy = -dy
-                        if (shoots[m1m].x == enemyes[m2m].x and shoots[m1m].y == enemyes[m2m].y) or (dx < 3 and dy < 3):
-                                enemyes[m2m].hp -= 15
-                                shoots.pop(m1m)
-                                #m1m -= 1
-                                m1m = len(shoots) -1
-                                if enemyes[m2m].hp <= 0:
-                                        enemyes.pop(m2m)
+                        if shoots[m1m].sight == 0:
+                                pass
+                        else:
+                                if (shoots[m1m].x == enemyes[m2m].x and shoots[m1m].y == enemyes[m2m].y) or (dx < 5 and dy < 5):
+                                        enemyes[m2m].hp -= 15
+                                        shoots.pop(m1m)
+                                        #m1m -= 1
+                                        m1m = len(shoots) -1
+                                        if enemyes[m2m].hp <= 0:
+                                                enemyes.pop(m2m)
 
                         m2m -= 1
                 m1m -= 1
                       
-                
 
-        for i in reversed(range(0, len(boom))):
-                boom[i].step()
-                if boom[i].destroy():
-                        boom.pop(i)
+        for i in reversed(range(0, len(booms))):
+                booms[i].step()
+                if booms[i].destroy():
+                        booms.pop(i)
 
                         
         
@@ -710,6 +711,9 @@ while not done:
                 shoot.render(screen)
         for explosion in shoots:
                 explosion.render(screen)
+        for boom in booms:
+                #boom.render(screen)
+                pass
         poleFFF(matrix)
         
         #screen.blit(explosion, e_rect, slide_rect)
