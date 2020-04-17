@@ -35,18 +35,18 @@ slide_rect.width = slide_rect.height
 
 
 
-
+ii=0
 orient = 1
 move = 0
 matrix =  [
            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-           [1, 3, 3, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-           [1, 3, 3, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+           [1, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+           [1, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1],
            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1],
            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
-           [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
+           [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1],
            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -344,7 +344,7 @@ class Enemy:
                 elif resp == 2:
                         self.x, self.y = 120, 10
                 elif resp == 3:
-                        self.x, self.y = 220, 10
+                        self.x, self.y = 230, 10
 
         def walls(self, matrix):
                 if (self.y % 10) == 0 and (self.x % 10) == 0:
@@ -505,7 +505,7 @@ i = 0
 shet = 0
 enemyes = []
 player = 1
-player2 = 8
+player2 = 20
 fight = 0
 
 
@@ -656,24 +656,30 @@ while not done:
                         m2m += 1
                 m1m += 1
 
-        m1m =0
-        while m1m < len(shoots):
-                m2m = 0
-                while m2m < len(enemyes):
+        m1m = len(shoots) -1
+        while m1m > 0:
+                m2m = len(enemyes)-1
+                while m2m > 0:
+                        #if shoots[m1m] == 0:
+                        #        pass
+                        #else:
                         dx = shoots[m1m].x - enemyes[m2m].x
                         dy = shoots[m1m].y - enemyes[m2m].y
                         if dx < 0:
                                 dx = -dx
                         if dy < 0:
                                 dy = -dy
-                        elif (shoots[m1m].x == enemyes[m2m].x and shoots[m1m].y == enemyes[m2m].y) or (dx < 3 and dy < 3):
+                        if (shoots[m1m].x == enemyes[m2m].x and shoots[m1m].y == enemyes[m2m].y) or (dx < 3 and dy < 3):
                                 enemyes[m2m].hp -= 15
+                                shoots.pop(m1m)
+                                #m1m -= 1
+                                m1m = len(shoots) -1
                                 if enemyes[m2m].hp <= 0:
                                         enemyes.pop(m2m)
-                                shoots.pop(m1m)
-                        m2m += 1
-                m1m += 1
-                        
+
+                        m2m -= 1
+                m1m -= 1
+                      
                 
 
         for i in reversed(range(0, len(boom))):
