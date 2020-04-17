@@ -94,7 +94,7 @@ class Boom:
                 
         def step(self):
                 self.ilolo += 1
-                self.slide_rect.x = (self.ilolo / 2) * 20
+                self.slide_rect.x = (self.ilolo // 2) * 20
         def destroy(self):
                 if self.ilolo > 7:
                         return True
@@ -143,7 +143,7 @@ class Shoot:
 
         def destroy(self, matrix):
                 if self.orient == 1:
-                        up = matrix[self.y / 10 +1][self.x / 10]
+                        up = matrix[self.y // 10 +1][self.x // 10]
                         if up == 1:
                                 booms.append(Boom((self.x*2+10, self.y*2+20)))
                                 return True
@@ -152,14 +152,14 @@ class Shoot:
                                 bbase.basehp -= 1
                                 return True
                         elif up == 2:
-                                matrix[self.y / 10 +1][self.x / 10] = 0
+                                matrix[self.y // 10 +1][self.x // 10] = 0
                                 play.wall = 0
                                 booms.append(Boom((self.x*2+10, self.y*2+10)))
                                 return True
                         else:
                                 return False
                 elif self.orient == 2:
-                        down = matrix[self.y / 10 ][self.x / 10]
+                        down = matrix[self.y // 10 ][self.x // 10]
                         if down == 1:
                                 booms.append(Boom((self.x*2+10, self.y*2)))
                                 return True
@@ -168,14 +168,14 @@ class Shoot:
                                 bbase.basehp -= 1
                                 return True
                         elif down == 2:
-                                matrix[self.y / 10 ][self.x / 10] = 0
+                                matrix[self.y // 10 ][self.x // 10] = 0
                                 play.wall = 0
                                 booms.append(Boom((self.x*2+10, self.y*2+10)))
                                 return True
                         else:
                                 return False
                 elif self.orient == 3:
-                        left = matrix[self.y / 10 ][self.x / 10 +1]
+                        left = matrix[self.y // 10 ][self.x // 10 +1]
                         if left == 1:
                                 booms.append(Boom((self.x*2+20, self.y*2+10)))
                                 return True
@@ -184,14 +184,14 @@ class Shoot:
                                 bbase.basehp -= 1
                                 return True
                         elif left == 2:
-                                matrix[self.y / 10][self.x / 10 +1] = 0
+                                matrix[self.y // 10][self.x // 10 +1] = 0
                                 play.wall = 0
                                 booms.append(Boom((self.x*2+14, self.y*2+10)))
                                 return True
                         else:
                                 return False
                 elif self.orient == 4:
-                        right = matrix[self.y / 10 ][self.x / 10 ]
+                        right = matrix[self.y // 10 ][self.x // 10 ]
                         if right == 1:
                                 booms.append(Boom((self.x*2, self.y*2+10)))
                                 return True
@@ -200,7 +200,7 @@ class Shoot:
                                 bbase.basehp -= 1
                                 return True
                         elif right == 2:
-                                matrix[self.y / 10 ][self.x / 10 ] = 0
+                                matrix[self.y // 10 ][self.x // 10 ] = 0
                                 play.wall = 0
                                 booms.append(Boom((self.x*2+10, self.y*2+10)))
                                 return True
@@ -314,10 +314,10 @@ class Player:
 
         def walls(self, matrix):
                 if (self.ggy % 10) == 0 and (self.ggx % 10) == 0:
-                        Y_axisd = matrix[self.ggy / 10 + 1][self.ggx / 10]
-                        Y_axisu = matrix[self.ggy / 10 - 1][self.ggx / 10]
-                        X_axisr = matrix[self.ggy / 10][self.ggx / 10 + 1]
-                        X_axisl = matrix[self.ggy / 10][self.ggx / 10 - 1]
+                        Y_axisd = matrix[self.ggy // 10 + 1][self.ggx // 10]
+                        Y_axisu = matrix[self.ggy // 10 - 1][self.ggx // 10]
+                        X_axisr = matrix[self.ggy // 10][self.ggx // 10 + 1]
+                        X_axisl = matrix[self.ggy // 10][self.ggx // 10 - 1]
                         if (Y_axisd == 1 or Y_axisd == 2 or Y_axisd == 4 or Y_axisd == 6) and self.orient == 2:
                                 self.wall = 2
                         elif (Y_axisu == 1 or Y_axisu == 2 or Y_axisu == 4 or Y_axisu == 6) and self.orient == 1:
@@ -401,10 +401,10 @@ class Enemy:
 
         def walls(self, matrix):
                 if (self.y % 10) == 0 and (self.x % 10) == 0:
-                        Y_axisd = matrix[self.y / 10 + 1][self.x / 10]
-                        Y_axisu = matrix[self.y / 10 - 1][self.x / 10]
-                        X_axisr = matrix[self.y / 10][self.x / 10 + 1]
-                        X_axisl = matrix[self.y / 10][self.x / 10 - 1]
+                        Y_axisd = matrix[self.y // 10 + 1][self.x // 10]
+                        Y_axisu = matrix[self.y // 10 - 1][self.x // 10]
+                        X_axisr = matrix[self.y // 10][self.x // 10 + 1]
+                        X_axisl = matrix[self.y // 10][self.x // 10 - 1]
                         if (Y_axisd == 1 or Y_axisd == 2 or Y_axisd == 4 or Y_axisd == 6) and self.orient == 2:
                                 self.wall = 2
                         elif (Y_axisu == 1 or Y_axisu == 2 or Y_axisu == 4 or Y_axisu == 6) and self.orient == 1:
@@ -776,7 +776,7 @@ while not done:
                 m1m += 1
 
 
-        fps = (str((float(int(clock.get_fps()*10))/10)))
+        fps = (str((float(int(clock.get_fps()*10))//10)))
         fps2 = 'fps: ' + fps
         
         text = font.render(fps2, 1, (255, 255, 10))
@@ -788,15 +788,15 @@ while not done:
         textpos2 = (510, 60)
 
         text3 = font3.render(u'Вы победили!', 1, (255, 10, 10))
-        textpos3 = text3.get_rect(centerx=(screen.get_width()-140)/2,centery=screen.get_height()/2)
+        textpos3 = text3.get_rect(centerx=(screen.get_width()-140)//2,centery=screen.get_height()//2)
         text4 = font.render(u'Уровень: ' + str(level + 1), 1, (255, 255, 10))
         textpos4 = text4.get_rect()
         textpos4 = (510, 5)
         text5 = font3.render(u'Вы проиграли!', 1, (255, 10, 10))
-        textpos5 = text5.get_rect(centerx=(screen.get_width()-140)/2,centery=screen.get_height()/2)
+        textpos5 = text5.get_rect(centerx=(screen.get_width()-140)//2,centery=screen.get_height()//2)
 
         text9 = font3.render(u'Вы прошли игру!', 1, (255, 10, 10))
-        textpos9 = text5.get_rect(centerx=(screen.get_width())/2,centery=screen.get_height()/2)
+        textpos9 = text5.get_rect(centerx=(screen.get_width())//2,centery=screen.get_height()//2)
 
 
         text6 = font2.render(u'Уровень игрока: ' + str(play.power - 1), 1, (255, 255, 10))
