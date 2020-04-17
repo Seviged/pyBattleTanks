@@ -787,13 +787,16 @@ while not done:
         textpos2 = text2.get_rect()
         textpos2 = (510, 60)
 
-        text3 = font3.render(u'Ты победил!', 1, (255, 10, 10))
+        text3 = font3.render(u'Вы победили!', 1, (255, 10, 10))
         textpos3 = text3.get_rect(centerx=(screen.get_width()-140)/2,centery=screen.get_height()/2)
         text4 = font.render(u'Уровень: ' + str(level + 1), 1, (255, 255, 10))
         textpos4 = text4.get_rect()
         textpos4 = (510, 5)
-        text5 = font3.render(u'Ты проиграл!', 1, (255, 10, 10))
+        text5 = font3.render(u'Вы проиграли!', 1, (255, 10, 10))
         textpos5 = text5.get_rect(centerx=(screen.get_width()-140)/2,centery=screen.get_height()/2)
+
+        text9 = font3.render(u'Вы прошли игру!', 1, (255, 10, 10))
+        textpos9 = text5.get_rect(centerx=(screen.get_width())/2,centery=screen.get_height()/2)
 
 
         text6 = font2.render(u'Уровень игрока: ' + str(play.power - 1), 1, (255, 255, 10))
@@ -947,7 +950,18 @@ while not done:
                         for k in reversed(range(0, len(bonuses))):
                                 bonuses.pop(k)
                         level += 1
-                        matrix = levels.lev[level]
+                        if level == 3:
+                                screen.fill((0,0,0))
+                                screen.blit(text9, textpos9)
+                                if reloads != 0:
+                                        reloads -= 1
+                                else:
+                                        time.sleep(1)
+                                        reloads = 60
+                                        go = False
+                                        done = True
+                        else:
+                                matrix = levels.lev[level]
                         reloads = 60
                         shbonus = random.randint(300, 700)
                         enable = 0
